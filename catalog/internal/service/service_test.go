@@ -2,8 +2,8 @@ package service_test
 
 import (
 	stderrors "errors"
-	"github.com/autodidaddict/go-shopping/catalog/internal/service"
-	"github.com/autodidaddict/go-shopping/catalog/proto"
+	"github.com/Jerry19900615/go-shopping/catalog/internal/service"
+	"github.com/Jerry19900615/go-shopping/catalog/proto"
 	"github.com/micro/go-micro/errors"
 	. "github.com/smartystreets/goconvey/convey"
 	"golang.org/x/net/context"

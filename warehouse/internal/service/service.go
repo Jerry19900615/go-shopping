@@ -1,10 +1,10 @@
 package service
 
 import (
-	"github.com/autodidaddict/go-shopping/shipping/proto"
-	"github.com/autodidaddict/go-shopping/warehouse/proto"
-	"github.com/micro/go-log"
+	shipping "github.com/Jerry19900615/go-shopping/shipping/proto"
+	warehouse "github.com/Jerry19900615/go-shopping/warehouse/proto"
 	"github.com/micro/go-micro/errors"
+	"github.com/micro/go-micro/util/log"
 	"golang.org/x/net/context"
 )
 

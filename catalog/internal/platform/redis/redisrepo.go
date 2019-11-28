@@ -2,7 +2,8 @@ package redis
 
 import (
 	"fmt"
-	"github.com/autodidaddict/go-shopping/catalog/proto"
+
+	catalog "github.com/Jerry19900615/go-shopping/catalog/proto"
 	"github.com/garyburd/redigo/redis"
 )
 
@@ -36,12 +37,13 @@ func (r *CatalogRepository) GetProduct(sku string) (product *catalog.Product, er
 	}
 
 	product = &catalog.Product{
-		p.SKU,
-		p.Name,
-		p.Description,
-		p.Manufacturer,
-		p.Model,
-		p.Price}
+		Sku:          p.SKU,
+		Name:         p.Name,
+		Description:  p.Description,
+		Manufacturer: p.Manufacturer,
+		Model:        p.Model,
+		Price:        p.Price,
+	}
 
 	return product, nil
 }

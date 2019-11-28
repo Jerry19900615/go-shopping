@@ -1,14 +1,13 @@
 package main
 
 import (
-	"github.com/autodidaddict/go-shopping/api/internal/platform/config"
-	"github.com/autodidaddict/go-shopping/api/internal/service"
+	"github.com/Jerry19900615/go-shopping/api/internal/platform/config"
+	"github.com/Jerry19900615/go-shopping/api/internal/service"
 	"github.com/emicklei/go-restful"
-	"github.com/micro/go-micro/client"
-	"github.com/micro/go-web"
+	"github.com/micro/go-micro/client/grpc"
+	"github.com/micro/go-micro/web"
 
-	"github.com/micro/go-log"
-	_ "github.com/micro/go-plugins/client/grpc"
+	"github.com/micro/go-micro/util/log"
 )
 
 const (
@@ -22,7 +21,7 @@ func main() {
 	)
 
 	webService.Init()
-	handler := service.NewCommerceService(client.DefaultClient)
+	handler := service.NewCommerceService(grpc.NewClient())
 
 	wc := restful.NewContainer()
 	ws := new(restful.WebService)

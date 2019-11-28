@@ -1,9 +1,9 @@
 package broker
 
 import (
-	"github.com/autodidaddict/go-shopping/shipping/proto"
-	"github.com/micro/go-log"
+	shipping "github.com/Jerry19900615/go-shopping/shipping/proto"
 	"github.com/micro/go-micro/broker"
+	"github.com/micro/go-micro/util/log"
 	"github.com/micro/protobuf/proto"
 )
 
@@ -15,7 +15,7 @@ const (
 // item shipped events, placing those events on that channel so that they can be processed
 // by other modules.
 func CreateEventConsumer(itemShippedChannel chan *shipping.ItemShippedEvent) (err error) {
-	_, err = broker.Subscribe(topic, func(p broker.Publication) error {
+	_, err = broker.Subscribe(topic, func(p broker.Event) error {
 		log.Logf("[sub] received message %+v", p.Message().Header)
 
 		var shippedEvent shipping.ItemShippedEvent

@@ -6,8 +6,8 @@ import (
 	"testing"
 
 	stderrors "errors"
-	"github.com/autodidaddict/go-shopping/shipping/internal/service"
-	"github.com/autodidaddict/go-shopping/shipping/proto"
+	"github.com/Jerry19900615/go-shopping/shipping/internal/service"
+	"github.com/Jerry19900615/go-shopping/shipping/proto"
 	"github.com/micro/go-micro/errors"
 	"net/http"
 )

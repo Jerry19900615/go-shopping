@@ -2,15 +2,17 @@ package service
 
 import (
 	stderrors "errors"
-	"github.com/autodidaddict/go-shopping/catalog/proto"
-	"github.com/autodidaddict/go-shopping/shipping/proto"
-	"github.com/autodidaddict/go-shopping/warehouse/proto"
+	"net/http"
+
+	catalog "github.com/Jerry19900615/go-shopping/catalog/proto"
+	shipping "github.com/Jerry19900615/go-shopping/shipping/proto"
+	warehouse "github.com/Jerry19900615/go-shopping/warehouse/proto"
 	"github.com/emicklei/go-restful"
-	"github.com/micro/go-log"
 	"github.com/micro/go-micro/client"
 	"github.com/micro/go-micro/errors"
+	"github.com/micro/go-micro/util/log"
 	"golang.org/x/net/context"
-	"net/http"
+	stdlog "log"
 )
 
 const (
@@ -20,9 +22,9 @@ const (
 )
 
 type CommerceService struct {
-	warehouseClient warehouse.WarehouseClient
-	shippingClient  shipping.ShippingClient
-	catalogClient   catalog.CatalogClient
+	warehouseClient warehouse.WarehouseService
+	shippingClient  shipping.ShippingService
+	catalogClient   catalog.CatalogService
 }
 
 type catalogResults struct {
@@ -35,11 +37,12 @@ type warehouseResults struct {
 	err               error
 }
 
+// NewCommerceService ...
 func NewCommerceService(c client.Client) *CommerceService {
 	return &CommerceService{
-		warehouseClient: warehouse.NewWarehouseClient(warehouseService, c),
-		shippingClient:  shipping.NewShippingClient(shippingService, c),
-		catalogClient:   catalog.NewCatalogClient(catalogService, c),
+		warehouseClient: warehouse.NewWarehouseService(warehouseService, c),
+		shippingClient:  shipping.NewShippingService(shippingService, c),
+		catalogClient:   catalog.NewCatalogService(catalogService, c),
 	}
 }
 
@@ -53,12 +56,14 @@ func (cs *CommerceService) GetProductDetails(request *restful.Request, response 
 
 	catalogReply := <-catalogCh
 	if catalogReply.err != nil {
+		stdlog.Println(catalogReply.err)
 		writeError(response, catalogReply.err)
 		return
 	}
 
 	warehouseReply := <-warehouseCh
 	if warehouseReply.err != nil {
+		stdlog.Println(warehouseReply.err)
 		writeError(response, warehouseReply.err)
 		return
 	}
@@ -92,6 +97,7 @@ func (cs *CommerceService) getWarehouseDetails(ctx context.Context, sku string) 
 
 	go func() {
 		res, err := cs.warehouseClient.GetWarehouseDetails(ctx, &warehouse.DetailsRequest{Sku: sku})
+		stdlog.Printf("%+v", err)
 		ch <- warehouseResults{warehouseResponse: res, err: err}
 	}()
 
