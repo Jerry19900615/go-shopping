@@ -1,7 +1,9 @@
 package service
 
 import (
-	"github.com/Jerry19900615/go-shopping/catalog/proto"
+	"fmt"
+
+	catalog "github.com/Jerry19900615/go-shopping/catalog/proto"
 	"github.com/micro/go-micro/errors"
 	"golang.org/x/net/context"
 )
@@ -73,7 +75,7 @@ func (c *catalogService) GetProductsInCategory(ctx context.Context, request *cat
 		return errors.InternalServerError("", "Failed to check category existence: %s", err.Error())
 	}
 	if !exists {
-		return errors.NotFound(string(request.CategoryId), "No such category")
+		return errors.NotFound(fmt.Sprintf("%v", request.CategoryId), "No such category")
 	}
 
 	results, err := c.catalogRepo.GetProductsInCategory(request.CategoryId)

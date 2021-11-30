@@ -1,10 +1,12 @@
 package service
 
 import (
-	"github.com/Jerry19900615/go-shopping/shipping/proto"
+	"fmt"
+	"time"
+
+	shipping "github.com/Jerry19900615/go-shopping/shipping/proto"
 	"github.com/micro/go-micro/errors"
 	"golang.org/x/net/context"
-	"time"
 )
 
 type shippingService struct {
@@ -65,11 +67,11 @@ func (s *shippingService) MarkItemShipped(ctx context.Context, request *shipping
 		return errors.InternalServerError("", "Failed to check order existence: %s", err.Error())
 	}
 	if !exists {
-		return errors.NotFound(string(request.OrderId), "No such order")
+		return errors.NotFound(fmt.Sprintf("%v", request.OrderId), "No such order")
 	}
 	tracking, err := s.repo.MarkShipped(request.Sku, request.OrderId, request.Note, request.ShippingMethod)
 	if err != nil {
-		return errors.InternalServerError(string(request.OrderId), "Failed to mark item as shipped: %s", err.Error())
+		return errors.InternalServerError(fmt.Sprintf("%v", request.OrderId), "Failed to mark item as shipped: %s", err.Error())
 	}
 	response.TrackingNumber = tracking
 
@@ -97,7 +99,7 @@ func (s *shippingService) GetShippingStatus(ctx context.Context, request *shippi
 		return errors.InternalServerError("", "Failed to check order existence: %s", err)
 	}
 	if !exists {
-		return errors.NotFound(string(request.OrderId), "No such order")
+		return errors.NotFound(fmt.Sprintf("%v", request.OrderId), "No such order")
 	}
 
 	status, err := s.repo.GetShippingStatus(request.OrderId, request.Sku)
